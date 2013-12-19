@@ -26,3 +26,7 @@ There are some concerns about how viable this design is. Mainly
 * We're depending on Github's uptime in order to display our docs.
 * I suspect that the Github API has a limit in the requests we can make to their API. Then again, the requests will be made from users' browsers so it's not IP or API tokens specific requests. Investigating further.
 * Is it easy for our developers to use docs in this way?
+
+### Credits
+
+Panayotis Papadomitsos @pj for find the name
