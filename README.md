@@ -19,6 +19,13 @@ It uses Github repositories and blobs as a storage and Github API to retrieve th
 
 ----
 
+# Advantages
+
+* It's fast
+* It's easy
+* It's highly maintanable
+* It nativelly supports versioning
+
 # Concerns
 
 There are some concerns about how viable this design is. Mainly
