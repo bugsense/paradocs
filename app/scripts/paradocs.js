@@ -6,7 +6,7 @@
   } else {
     root.Paradocs = factory(root, {}, root.Backbone, root._, (root.jQuery || root.$));
   }
-}(this, function(root, Paradocs, Backbone, _, $){
+}(this, function(root, Paradocs, Backbone, _, $) {
   Paradocs.VERSION = 0.5;
 
   var DocsModel = Backbone.Model.extend({});
@@ -29,7 +29,7 @@
     }).join('');
   };
   /* Saves text in a Model for future use */
-  Paradocs.save = function(html, filepath) {
+  Paradocs.save = function(html) {
     this._data.set({
       'text': html,
       'nav' : this.populateNavItems(html)
