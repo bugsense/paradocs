@@ -12,9 +12,9 @@
   var DocsModel = Backbone.Model.extend({});
   var AppRouter = Backbone.Router.extend({
     routes: {"docs/*tech": 'docs'},
-    docs: function(filepath){ Paradocs.get(filepath) }
+    docs: function(filepath){ Paradocs.fetch(filepath) }
   });
-  Paradocs.get = function (filepath) {
+  Paradocs.fetch = function (filepath) {
     $.ajax({
       headers: {Accept : "application/vnd.github.VERSION.html+json"},
       url: "https://api.github.com/repos/tsironis/dockie/contents/"+filepath+".md",
@@ -23,20 +23,23 @@
       Paradocs.save(html, filepath);
     });
   };
-  var populateNavItems = function(html) {
+  Paradocs.populateNavItems = function(html) {
     return _.map($('h2', html), function(el) {
       return '<li>'+$(el).text()+'</li>';
     }).join('');
   };
   /* Saves text in a Model for future use */
   Paradocs.save = function(html, filepath) {
-    Paradocs.Data.set({
+    this._data.set({
       'text': html,
-      'nav' : populateNavItems(html)
+      'nav' : this.populateNavItems(html)
     });
   };
+  Paradocs.get = function (key) {
+    return this._data.get(key);
+  };
 
-  Paradocs.Data = new DocsModel();
+  Paradocs._data = new DocsModel();
   Paradocs.router = new AppRouter();
   Backbone.history.start();
 
