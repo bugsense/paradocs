@@ -7,8 +7,9 @@
     root.Paradocs = factory(root, {}, root.Backbone, root._, (root.jQuery || root.$));
   }
 }(this, function(root, Paradocs, Backbone, _, $){
-  Paradocs.VERSION = 0.1;
+  Paradocs.VERSION = 0.5;
 
+  var DocsModel = Backbone.Model.extend({});
   var AppRouter = Backbone.Router.extend({
     routes: {"docs/*tech": 'docs'},
     docs: function(filepath){ Paradocs.get(filepath) }
@@ -19,17 +20,23 @@
       url: "https://api.github.com/repos/tsironis/dockie/contents/"+filepath+".md",
       type: "GET",
     }).done(function(html) {
-      Paradocs.render(html, filepath);
+      Paradocs.save(html, filepath);
     });
   };
-  Paradocs.render = function(html, filepath) {
-    $('ul li ul').empty();
-    $( "#docs" ).empty().html(html);
-    _.each($('#docs h2'), function(el) {
-      $('ul', '#'+filepath).append('<li>'+$(el).text()+'</li>');
+  var populateNavItems = function(html) {
+    return _.map($('h2', html), function(el) {
+      return '<li>'+$(el).text()+'</li>';
+    }).join('');
+  };
+  /* Saves text in a Model for future use */
+  Paradocs.save = function(html, filepath) {
+    Paradocs.Data.set({
+      'text': html,
+      'nav' : populateNavItems(html)
     });
   };
 
+  Paradocs.Data = new DocsModel();
   Paradocs.router = new AppRouter();
   Backbone.history.start();
 
