@@ -55,6 +55,28 @@
 
         <!-- build:js scripts/main.js -->
         <script src="scripts/paradocs.js"></script>
+        <script type="text/javascript" charset="utf-8">
+          Paradocs.fail = function () {
+            $('body').html(Paradocs.errorTmpl);
+          };
+          Paradocs.Router = Backbone.Router.extend({
+            routes: {
+              "": "index",
+              "*tech": 'docs'
+            },
+            index: function() {
+              $('#loading').hide();
+              $('.docs').show();
+            },
+            docs: function(filepath){
+              Paradocs.fetch(filepath);
+              var docsView = new Paradocs.View();
+            }
+          });
+          $(document).ready(function () {
+            Paradocs.start({repo: 'bugsense/docs', el: 'div#docs'});
+          });
+        </script>
         <!-- endbuild -->
 </body>
 </html>
