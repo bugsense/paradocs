@@ -15,7 +15,7 @@
   var options = new Model();
 
   /* Utils functions */
-  Paradocs.errorTmpl = _.template("<div class='error'><img src='/static/images/landing/home/nofound.png' /><h2>Oops!</h2><p>Something went terribly wrong!</p><p>Please contact us in the support.</p></div>");
+  Paradocs.errorTmpl = _.template("<h2>Oops!</h2><p>Something went terribly wrong!</p>");
   var getURL = function(name) {
     return 'https://api.github.com/repos/'+options.get('repo')+'/contents/'+name+'.md';
   };
@@ -44,6 +44,11 @@
     }).fail(function() {
       Paradocs.fail.apply();
     });
+  };
+
+  /* Handles AJAX failure gracefully */
+  Paradocs.fail = function() {
+    $(options.get('el')).html(Paradocs.errorTmpl);
   };
 
   /* Saves text in a Model for future use */
