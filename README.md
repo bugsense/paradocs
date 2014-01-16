@@ -1,44 +1,36 @@
 # Paradocs
 
-Paradocs (it's a paradox, get it?!?) is a Javascript documentation engine based entirely in the Github API. It's basically a Backbone.js wrapper, that let's you easily fetch compiled HTML from Github API.
-
-It's written entirelly in JavaScript and be as decoupled as possible from any backend code, so it can be used for any projects with as little maintenance as possible and with a few lines of code, in any platform without having to do operations, deploys etc.
-
-It uses Github repositories and blobs as a storage and Github API to retrieve the Markdown files. Github API return generated HTML. The API call changes according to the route you're currently visiting. Eg. if you're reading ```docs/android```, the Paradocs will fetch the ```android.md``` from the Github repository.
-
-----
-# Usage
-
-Open the ```app/index.html``` file in your favorite browser to see a demo of what is already implemented.
-
-Currently data are fetched from [tsironis/dockie](https://github.com/bugsense/docs). Just a mere example.
-----
+**Paradocs** (prounounced /ˈpærədɒks/ it means next to the docs and also it's a *paradox*, get it?!?) is a Javascript documentation engine based entirely in the Github API. It's basically a [Backbone.js](http://backbonejs.org/) wrapper, that let's you easily fetch compiled Markdown from Github API.
 
 ## Installation
 
-```bower install paradocs```
+Installing paradocs via bower in your project
+```bash
+bower install paradocs
+```
+or just download it and put it your project
 
+Then add it to your HTML source:
 ```html
-<script src="path/to/bower/paradocs.js"></script>
+<script src="path/to/paradocs.js"></script>
 ```
 
-**Starting the engine :train:**
+### Starting the engine
 ```js
 $(document).ready(function() {
   Paradocs.start({repo: 'bugsense/docs'});
 });
 ```
 
-**Options**
+### Initialization Options
 
-*   ```el```
-    DOM element the docs will be rendered to
-*   ```repo```
-    Github repo (eg. joyent/node) from where the docs will be fetched
-*   ```root```
-    Root URL from where the router will be started, for more info [here](http://backbonejs.org/#History-start)
+* ```el``` - DOM element that the docs will be rendered to
 
-*Example*
+* ```repo``` - Github repo (eg. joyent/node) from where the docs will be fetched
+
+* ```root``` - Root URL from where the router will be started, for more info [here](http://backbonejs.org/#History-start)
+
+***Example***
 
 ```js
 Paradocs.start({
@@ -48,14 +40,13 @@ Paradocs.start({
 });
 ```
 
-----
-
 ## Customizing to your needs
 
-*   ```Paradocs.fail { function }```
+*   ```Paradocs.fail [ function ]```
+
     This callback will be executed when the AJAX calls fails for some reason
 
-    **Example**
+    ***Example***
 
     ```js
     Paradocs.fail = function () {
@@ -63,10 +54,11 @@ Paradocs.start({
     };
     ```
 
-*   ```Paradocs.Router { function }```
+*   ```Paradocs.Router [ function ]```
+
     Overriding the default Backbone Router
 
-    **Example**
+    ***Example***
 
     ```js
     Paradocs.View = Backbone.View.extend({
@@ -86,39 +78,45 @@ Paradocs.start({
     });
     ```
 
-*   ```Paradocs.Router { function }```
-    Overriding the default Backbone Router
+*   ```Paradocs.View [ function ]```
 
-    **Example**
+    Overriding the default Backbone View
+
+    ***Example***
 
     ```js
-    Paradocs.Router = Backbone.Router.extend({
-      routes: {
-        "": "index",
-        "*tech": 'docs'
+    Paradocs.View = Backbone.View.extend({
+      initialize: function () {
+        this.el = options.get('el')
+        data.on('change', this.render, this);
+        // Custom stuff you want to do
+        return this;
       },
-      index: function() {
-        $('#loading').hide();
-        $('.docs').show();
+      customWeirdFunction: function() {
+        // more custom stuff
       },
-      docs: function(filepath){
-        Paradocs.fetch(filepath);
-        var docsView = new Paradocs.View();
+      render: function () {
+        $(this.el).html(Paradocs.get('text')).addClass(Paradocs.get('tech'));
+        $('ul', '.'+Paradocs.get('tech')).html(Paradocs.get('nav'));
+        this.customWeirdStuff();
       }
     });
     ```
 
-----
+## How it works
+*Paradocs* is written entirelly in JavaScript and be modular and as decoupled as possible from any backend code, so it can be used for any projects with little maintenance, without writing too many lines of code. Also you can use it in any backend framework without having to do operations, deploys etc.
+
+It uses Github repositories and blobs as a storage and Github API to retrieve the Markdown files. Github API return generated HTML. The API call changes according to the route you're currently visiting. Eg. if you're reading ```/docs/v1/android```, the Paradocs will fetch the ```android.md``` from the Github repository.
 
 ## Features
 
 * It's fast
-* It's easy
-* It has almost zero maintenance
-* It nativelly supports versioning, (it's git-based after all)
+* It's easy/effortless
+* It has (almost) zero maintenance
+* It nativelly supports versioning, (it's git-based after all), so you can plan your product releases, then merge and be ready to rock and roll.
 
 ## Credits
 
-* Dimitris Tsironis (@tsironis) for concept, design & implementation
-* Jon Romero (@jonromero) for facilitating development
-* Panagiotis PJ Papadomitsos (@priestjim) for finding the awesome name
+* Dimitris Tsironis [(@tsironis)](http://github.com/tsironis) for concept, design & implementation
+* Jon Romero [(@jonromero)](http://github.com/jonromero) for facilitating development process
+* Panagiotis PJ Papadomitsos [(@priestjim)](http://github.com/priestjim) for coming up with this awesome name
