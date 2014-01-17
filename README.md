@@ -1,4 +1,4 @@
-# Paradocs
+![Paradocs logo](http://i.imgur.com/vbV0UHY.png)
 
 **Paradocs** (prounounced /ˈpærədɒks/ it means next to the docs and also it's a *paradox*, get it?!?) is a Javascript documentation engine based entirely in the Github API. It's basically a [Backbone.js](http://backbonejs.org/) wrapper, that let's you easily fetch compiled Markdown from Github API.
 
